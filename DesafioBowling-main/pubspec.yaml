@@ -67,6 +67,7 @@ flutter:
     - images/greenBall.png
     - images/yellowBall.png
     - images/purpleBall.png
+    - images/Strikee.png
  
 
   # An image asset can refer to one or more resolution-specific "variants", see

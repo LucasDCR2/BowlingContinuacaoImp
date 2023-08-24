@@ -18,7 +18,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final logger = Logger();
 
   List<FrameScore> frameScores = List.generate(10,(index) => FrameScore(index + 1, 0, 0, 0, 0),);
-  int buttonValue = 0;
   // List<int> valoresBotoes = [];
 
   @override
@@ -34,39 +33,36 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                'Bem-vindo ao Aplicativo de Boliche!',
-                style: TextStyle(fontSize: 28),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
               ),
-            ),
-            Stack(
-              children: [
-                SizedBox(
-                  child: Column(
-                    children: [
-                      criarContainersScore(context),
-                      SizedBox(height: 30),
-                      criarLinhaNumeros(context),
-                      criarTabelaScore(context),
-                      SizedBox(height: 50),
-                      criarBotoesOpcoes(context)
-                    ],
+              Stack(
+                children: [
+                  SizedBox(
+                    child: Column(
+                      children: [
+                        criarContainersScore(context),
+                        SizedBox(height: 30),
+                        criarLinhaNumeros(context),
+                        criarTabelaScore(context),
+                        SizedBox(height: 20),
+                        criarBotoesOpcoes(context),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
 
     Widget criarLinhaNumeros(BuildContext context) {
     return SizedBox(
@@ -299,10 +295,6 @@ Widget criarTabelaScore(BuildContext context) {
 }
 
 
-
-
-
-
 Widget criarBotoesOpcoes(BuildContext context) {
   List<String> imagens = [
     'images/blueBall.png',
@@ -313,32 +305,52 @@ Widget criarBotoesOpcoes(BuildContext context) {
 
   
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 80),
-    width: MediaQuery.of(context).size.width * 1.0,
-    height: MediaQuery.of(context).size.height * 0.35,
+    margin: EdgeInsets.only(right: 1180),
+    width: MediaQuery.of(context).size.width * 0.3,
+    height: MediaQuery.of(context).size.height * 0.38,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: EdgeInsets.only(left: 200),
-              width: 100,
-              height: 100,
+            for (int row = 0; row < 1; row++)
+            for (int col = 0; col < 1; col++)
+
+            SizedBox(
+              width: 140,
+              height: 140,
               child: ElevatedButton(
-              onPressed: () {
-                // Lógica para o novo botão
-              },
-              child: Text('Novo Botão'),
-            ),
+                        onPressed: () {
+                          bowlingLogic.updateScores(frameScores, 2, 0);
+                          setState(() {});             
+                      },
+                      
+                        style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                        ),
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          image: DecorationImage(
+                            image: AssetImage('images/Strikee.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
             )
           ],
         ),
       
         for (int row = 0; row < 2; row++)
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               for (int col = 0; col < 5; col++)
                 SizedBox(
@@ -373,7 +385,7 @@ Widget criarBotoesOpcoes(BuildContext context) {
                         child: Container(
                           margin: EdgeInsets.only(top: 40),     
                           child: Text(                              // Quando row é 0 e col é 0, o valor calculado será 1 (0 * 5 + 0 + 1).
-                            '${1 + row * 5 + col}',                 // Quando row é 0 e col é 1, o valor calculado será 2 (0 * 5 + 1 + 1).
+                            '${row * 5 + col}',                 // Quando row é 0 e col é 1, o valor calculado será 2 (0 * 5 + 1 + 1).
                             style: TextStyle(                       // -------------------------------------------------------------------
                               color: Colors.white,                // Quando row é 1 e col é 0, o valor calculado será 6 (1 * 5 + 0 + 1).
                               fontSize: 30,                         // Quando row é 1 e col é 1, o valor calculado será 7 (1 * 5 + 1 + 1).
