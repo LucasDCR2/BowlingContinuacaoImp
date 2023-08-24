@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:bowling/logica/bowling_logic.dart';
 
-final logger = Logger();
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -13,6 +13,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final BowlingLogic bowlingLogic = BowlingLogic();
+  final logger = Logger();
+
+  List<FrameScore> frameScores = List.generate(10,(index) => FrameScore(index + 1, 0, 0, 0, 0),);
+  int buttonValue = 0;
+  // List<int> valoresBotoes = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(50.0),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 'Bem-vindo ao Aplicativo de Boliche!',
                 style: TextStyle(fontSize: 28),
@@ -59,134 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget criarTabelaScore(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.92,
-          height: MediaQuery.of(context).size.height * 0.16,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (int frame = 1; frame <= 10; frame++)
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.9 / 10,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    color: Colors.grey,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (frame != 10)
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width *
-                                      0.86 /
-                                      10) /
-                                  2,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.16 / 2,
-                              child: Center(),
-                            ),
-                            Container(
-                              width: (MediaQuery.of(context).size.width *
-                                      0.9 /
-                                      10) /
-                                  2,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.16 / 2,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Colors.black,
-                                    width: 2.3,
-                                  ),
-                                  bottom: BorderSide(
-                                    color: Colors.black,
-                                    width: 2.0,
-                                  ),
-                                ),
-                              ),
-                              child: Center(),
-                            ),
-                          ],
-                        ),
-                      if (frame == 10)
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width *
-                                      0.6 /
-                                      10) /
-                                  2,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.16 / 2,
-                              child: Center(),
-                            ),
-                            Container(
-                              width: (MediaQuery.of(context).size.width *
-                                      0.9 /
-                                      10) /
-                                  3,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.16 / 2,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Colors.black,
-                                    width: 2.3,
-                                  ),
-                                  bottom: BorderSide(
-                                    color: Colors.black,
-                                    width: 2.0,
-                                  ),
-                                ),
-                              ),
-                              child: Center(),
-                            ),
-                            Container(
-                              width: (MediaQuery.of(context).size.width *
-                                      0.86 /
-                                      10) /
-                                  3,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.16 / 2,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Colors.black,
-                                    width: 2.3,
-                                  ),
-                                  bottom: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                              child: Center(),
-                            ),
-                          ],
-                        ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.89 / 10,
-                        height: MediaQuery.of(context).size.height * 0.14 / 2,
-                        child: Center(),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 
-  Widget criarLinhaNumeros(BuildContext context) {
+    Widget criarLinhaNumeros(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.92,
       height: MediaQuery.of(context).size.height * 0.048,
@@ -210,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
 
   Widget criarContainersScore(BuildContext context) {
     return Row(
@@ -247,8 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 90,
                 alignment: Alignment.center,
                 child: Text(
-                  'Container 1.2',
-                  style: TextStyle(color: Colors.white),
+                  '0',
+                  style: TextStyle(color: Colors.white,
+                  fontSize: 26),
                 ),
               ),
             ],
@@ -287,8 +171,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 90,
                 alignment: Alignment.center,
                 child: Text(
-                  'Container 2.2',
-                  style: TextStyle(color: Colors.white),
+                  '300',
+                  style: TextStyle(color: Colors.white,
+                  fontSize: 26),
                 ),
               ),
             ],
@@ -299,6 +184,125 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+
+Widget criarTabelaScore(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      SizedBox(
+        width: MediaQuery.of(context).size.width * 0.92,
+        height: MediaQuery.of(context).size.height * 0.16,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (int frameIndex = 0; frameIndex < 10; frameIndex++)
+              Container(
+                width: MediaQuery.of(context).size.width * 0.9 / 10,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: Colors.grey,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (frameIndex != 9)
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width * 0.86 / 10) / 2,
+                          height: MediaQuery.of(context).size.height * 0.16 / 2,
+                          child: Center(
+                            child: Text('${frameScores[frameIndex].value1}',style: TextStyle(fontSize: 26),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: (MediaQuery.of(context).size.width * 0.9 / 10) / 2,
+                          height: MediaQuery.of(context).size.height * 0.16 / 2,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              left: BorderSide(
+                                color: Colors.black,
+                                width: 2.3,
+                              ),
+                              bottom: BorderSide(
+                                color: Colors.black,
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text('${frameScores[frameIndex].value2}', style: TextStyle(fontSize: 26),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                     if (frameIndex == 9)
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: (MediaQuery.of(context).size.width * 0.6 / 10) / 2,
+                            height: MediaQuery.of(context).size.height * 0.16 / 2,
+                            child: Center(child: Text('${frameScores[frameIndex].value1}',style: TextStyle(fontSize: 26),),),
+                          ),
+                          Container(
+                            width: (MediaQuery.of(context).size.width * 0.9 / 10) / 3,
+                            height: MediaQuery.of(context).size.height * 0.16 / 2,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Colors.black,
+                                  width: 2.3,
+                                ),
+                                bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                            child: Center(child: Text('${frameScores[frameIndex].value2}',style: TextStyle(fontSize: 26),),),
+                          ),
+                          Container(
+                            width: (MediaQuery.of(context).size.width * 0.86 / 10) / 3,
+                            height: MediaQuery.of(context).size.height * 0.16 / 2,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Colors.black,
+                                  width: 2.3,
+                                ),
+                                bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                            child: Center(child: Text('${frameScores[frameIndex].value4}',style: TextStyle(fontSize: 26),),),
+                          ),
+                        ],
+                      ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.89 / 10,
+                      height: MediaQuery.of(context).size.height * 0.14 / 2,
+                      child: Center(child: Text('${frameScores[frameIndex].value3}',style: TextStyle(fontSize: 26),),),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+
+
+
+
+
 Widget criarBotoesOpcoes(BuildContext context) {
   List<String> imagens = [
     'images/blueBall.png',
@@ -307,13 +311,31 @@ Widget criarBotoesOpcoes(BuildContext context) {
     'images/greenBall.png',
   ];
 
+  
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 80),
-    width: MediaQuery.of(context).size.width * 1.2,
-    height: MediaQuery.of(context).size.height * 0.3,
+    width: MediaQuery.of(context).size.width * 1.0,
+    height: MediaQuery.of(context).size.height * 0.35,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 200),
+              width: 100,
+              height: 100,
+              child: ElevatedButton(
+              onPressed: () {
+                // Lógica para o novo botão
+              },
+              child: Text('Novo Botão'),
+            ),
+            )
+          ],
+        ),
+      
         for (int row = 0; row < 2; row++)
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -321,18 +343,20 @@ Widget criarBotoesOpcoes(BuildContext context) {
               for (int col = 0; col < 5; col++)
                 SizedBox(
                   width: 100,
-                  height: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(500),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        int frame = row * 5 + col + 1;
-                        logger.d('Botão $frame pressionado');
+                    height: 100,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(500),
+
+                      child: ElevatedButton(
+                        onPressed: () {                        
+                          bowlingLogic.updateScores(frameScores, row, col);
+                          setState(() {});                  
                       },
-                      style: ElevatedButton.styleFrom(
+                      
+                        style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(100),
                         ),
                         backgroundColor: Colors.transparent,
                         elevation: 0,
@@ -346,9 +370,15 @@ Widget criarBotoesOpcoes(BuildContext context) {
                           ),
                         ),
                         alignment: Alignment.center,
-                        child: Text(
-                          '${row * 5 + col + 1}',
-                          style: TextStyle(color: Colors.white),
+                        child: Container(
+                          margin: EdgeInsets.only(top: 40),     
+                          child: Text(                              // Quando row é 0 e col é 0, o valor calculado será 1 (0 * 5 + 0 + 1).
+                            '${1 + row * 5 + col}',                 // Quando row é 0 e col é 1, o valor calculado será 2 (0 * 5 + 1 + 1).
+                            style: TextStyle(                       // -------------------------------------------------------------------
+                              color: Colors.white,                // Quando row é 1 e col é 0, o valor calculado será 6 (1 * 5 + 0 + 1).
+                              fontSize: 30,                         // Quando row é 1 e col é 1, o valor calculado será 7 (1 * 5 + 1 + 1).
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -362,5 +392,9 @@ Widget criarBotoesOpcoes(BuildContext context) {
 }
 
 
-
 }
+/*// Quando row é 0 e col é 0, o valor calculado será 1 (0 * 5 + 0 + 1).
+  // Quando row é 0 e col é 1, o valor calculado será 2 (0 * 5 + 1 + 1).
+  // -------------------------------------------------------------------
+  // Quando row é 1 e col é 0, o valor calculado será 6 (1 * 5 + 0 + 1).
+  // Quando row é 1 e col é 1, o valor calculado será 7 (1 * 5 + 1 + 1).*/ 
