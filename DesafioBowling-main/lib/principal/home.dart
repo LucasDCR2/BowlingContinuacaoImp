@@ -17,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final BowlingLogic bowlingLogic = BowlingLogic();
   final logger = Logger();
   
-  List<FrameScore> frameScores = List.generate(10,(index) => FrameScore(index + 1, 0, 0, 0, 0),);
+  List<FrameScore> frameScores = List.generate(10,(index) => FrameScore(index + 1, -1, 0, -1, -1),);
   // List<int> valoresBotoes = [];
 
   @override
@@ -209,8 +209,12 @@ Widget criarTabelaScore(BuildContext context) {
                           width: (MediaQuery.of(context).size.width * 0.86 / 10) / 2,
                           height: MediaQuery.of(context).size.height * 0.16 / 2,
                           child: Center(
-                            child: Text('${frameScores[frameIndex].value1}',style: TextStyle(fontSize: 26),
-                            ),
+                            child: isEscolhaVisible(frameScores[frameIndex].value1)
+                                  ? Text(
+                                      '${frameScores[frameIndex].value1}',
+                                      style: TextStyle(fontSize: 26),
+                                    )
+                                  : Container(), 
                           ),
                         ),
                         Container(
@@ -229,8 +233,13 @@ Widget criarTabelaScore(BuildContext context) {
                             ),
                           ),
                           child: Center(
-                            child: Text('${frameScores[frameIndex].value2}', style: TextStyle(fontSize: 26),
-                            ),
+                            child: isEscolhaVisible(frameScores[frameIndex].value1) &&
+                                  frameScores[frameIndex].value2 != -1
+                                    ? Text(
+                                      '${frameScores[frameIndex].value2}',
+                                      style: TextStyle(fontSize: 26),
+                                    )
+                                  : Container(), 
                           ),
                         ),
                       ],
@@ -241,7 +250,13 @@ Widget criarTabelaScore(BuildContext context) {
                           SizedBox(
                             width: (MediaQuery.of(context).size.width * 0.6 / 10) / 2,
                             height: MediaQuery.of(context).size.height * 0.16 / 2,
-                            child: Center(child: Text('${frameScores[frameIndex].value1}',style: TextStyle(fontSize: 26),),),
+                            child: Center(
+                                child: isEscolhaVisible(frameScores[frameIndex].value1)
+                                  ? Text(
+                                      '${frameScores[frameIndex].value1}',
+                                      style: TextStyle(fontSize: 26),
+                                    )
+                                  : Container(), ),
                           ),
                           Container(
                             width: (MediaQuery.of(context).size.width * 0.9 / 10) / 3,
@@ -258,7 +273,14 @@ Widget criarTabelaScore(BuildContext context) {
                                 ),
                               ),
                             ),
-                            child: Center(child: Text('${frameScores[frameIndex].value2}',style: TextStyle(fontSize: 26),),),
+                            child: Center(
+                              child: isEscolhaVisible(frameScores[frameIndex].value1) &&
+                                  frameScores[frameIndex].value2 != -1
+                                  ? Text(
+                                      '${frameScores[frameIndex].value2}',
+                                      style: TextStyle(fontSize: 26),
+                                    )
+                                  : Container(), ),
                           ),
                           Container(
                             width: (MediaQuery.of(context).size.width * 0.86 / 10) / 3,
@@ -275,14 +297,32 @@ Widget criarTabelaScore(BuildContext context) {
                                 ),
                               ),
                             ),
-                            child: Center(child: Text('${frameScores[frameIndex].value4}',style: TextStyle(fontSize: 26),),),
+                            child: Center(
+                              child: isEscolhaVisible(frameScores[frameIndex].value1) &&
+                                  frameScores[frameIndex].value2 != -1 &&
+                                  frameScores[frameIndex].value4 != -1 
+                                  //frameScores[frameIndex].value3 != -1
+                                  ? Text(
+                                      '${frameScores[frameIndex].value4}',
+                                      style: TextStyle(fontSize: 26),
+                                    )
+                                  : Container(), ),
                           ),
                         ],
                       ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.89 / 10,
                       height: MediaQuery.of(context).size.height * 0.14 / 2,
-                      child: Center(child: Text('${frameScores[frameIndex].value3}',style: TextStyle(fontSize: 26),),),
+                      child: Center(
+                        child: isEscolhaVisible(frameScores[frameIndex].value1) &&
+                                  frameScores[frameIndex].value2 != -1 &&
+                                  frameScores[frameIndex].value3 != -1 &&
+                                  frameScores[frameIndex].value3 != 10
+                                  ? Text(
+                                      '${frameScores[frameIndex].value3}',
+                                      style: TextStyle(fontSize: 26),
+                                    )
+                                  : Container(), ),
                     ),
                   ],
                 ),
@@ -403,8 +443,9 @@ Widget criarBotoesOpcoes(BuildContext context) {
   );
 }
 
-
-
+bool isEscolhaVisible(int value) {
+  return value > -1;
+}
 
 }
 /*// Quando row é 0 e col é 0, o valor calculado será 1 (0 * 5 + 0 + 1).
