@@ -16,7 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final BowlingLogic bowlingLogic = BowlingLogic();
   final logger = Logger();
-
+  
   List<FrameScore> frameScores = List.generate(10,(index) => FrameScore(index + 1, 0, 0, 0, 0),);
   // List<int> valoresBotoes = [];
 
@@ -303,9 +303,10 @@ Widget criarBotoesOpcoes(BuildContext context) {
     'images/greenBall.png',
   ];
 
-  
+  bowlingLogic.updateButtonVisibility(); // Atualiza a visibilidade dos botões
+
   return Container(
-    margin: EdgeInsets.only(right: 1180),
+    margin: EdgeInsets.only(right: 1200),
     width: MediaQuery.of(context).size.width * 0.3,
     height: MediaQuery.of(context).size.height * 0.38,
     child: Column(
@@ -315,93 +316,94 @@ Widget criarBotoesOpcoes(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             for (int row = 0; row < 1; row++)
-            for (int col = 0; col < 1; col++)
-
-            SizedBox(
-              width: 140,
-              height: 140,
-              child: ElevatedButton(
-                        onPressed: () {
-                          bowlingLogic.updateScores(frameScores, 2, 0);
-                          setState(() {});             
-                      },
-                      
-                        style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        ),
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          image: DecorationImage(
-                            image: AssetImage('images/Strikee.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-            )
-          ],
-        ),
-      
-        for (int row = 0; row < 2; row++)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int col = 0; col < 5; col++)
+              for (int col = 0; col < 1; col++)
                 SizedBox(
-                  width: 100,
-                    height: 100,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(500),
-
-                      child: ElevatedButton(
-                        onPressed: () {                        
-                          bowlingLogic.updateScores(frameScores, row, col);
-                          setState(() {});                  
-                      },
-                      
-                        style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
+                  width: 140,
+                  height: 140,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      bowlingLogic.updateScores(frameScores, 2, 0);
+                      setState(() {});
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
-                        ),
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          image: DecorationImage(
-                            image: AssetImage(imagens[(row * 5 + col) % imagens.length]),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 40),     
-                          child: Text(                              // Quando row é 0 e col é 0, o valor calculado será 1 (0 * 5 + 0 + 1).
-                            '${row * 5 + col}',                 // Quando row é 0 e col é 1, o valor calculado será 2 (0 * 5 + 1 + 1).
-                            style: TextStyle(                       // -------------------------------------------------------------------
-                              color: Colors.white,                // Quando row é 1 e col é 0, o valor calculado será 6 (1 * 5 + 0 + 1).
-                              fontSize: 30,                         // Quando row é 1 e col é 1, o valor calculado será 7 (1 * 5 + 1 + 1).
-                            ),
-                          ),
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        image: DecorationImage(
+                          image: AssetImage('images/Strikee.png'),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                ),
-            ],
-          ),
-      ],
+                )
+          ],
+        ),
+        for (int row = 0; row < 2; row++)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int col = 0; col < 5; col++)
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(500),
+                      child: bowlingLogic.buttonsVisibility[row][col] // Usa a matriz para determinar a visibilidade
+                          ? ElevatedButton(
+                              onPressed: () {
+                                bowlingLogic.updateScores(
+                                    frameScores, row, col);
+                                setState(() {});
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  image: DecorationImage(
+                                    image: AssetImage(imagens[
+                                        (row * 5 + col) % imagens.length]),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 40),
+                                  child: Text(
+                                    '${row * 5 + col}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SizedBox(), // Oculta o botão se não for visível
+                    ),
+                  ),
+              ],
+            ),
+        ],
     ),
   );
 }
+
+
 
 
 }
