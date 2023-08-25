@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(
                     child: Column(
                       children: [
-                        criarContainersScore(context),
+                        criarContainersScore(context, 150, 300),
                         SizedBox(height: 30),
                         criarLinhaNumeros(context),
                         criarTabelaScore(context),
@@ -90,94 +90,94 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-  Widget criarContainersScore(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 325,
-          height: 150,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            color: Colors.grey,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 325,
-                height: 58,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.black,
-                      width: 2.0,
-                    ),
+  Widget criarContainersScore(BuildContext context, int hdcpScore, int maxPossibleScore) {
+  int hdcpScore = bowlingLogic.calculateHDCP(frameScores);
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        width: 325,
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.grey,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 325,
+              height: 58,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black,
+                    width: 2.0,
                   ),
                 ),
-                child: Text(
-                  'HDCP Score',
-                  style: TextStyle(color: Colors.white, fontSize: 26),
-                ),
               ),
-              Container(
-                width: 325,
-                height: 90,
-                alignment: Alignment.center,
-                child: Text(
-                  '0',
-                  style: TextStyle(color: Colors.white,
-                  fontSize: 26),
-                ),
+              child: Text(
+                'HDCP',
+                style: TextStyle(color: Colors.white, fontSize: 26),
               ),
-            ],
-          ),
+            ),
+            Container(
+              width: 325,
+              height: 90,
+              alignment: Alignment.center,
+              child: Text(
+                hdcpScore.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 26),
+              ),
+            ),
+          ],
         ),
-        SizedBox(width: 20),
-        Container(
-          width: 325,
-          height: 150,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            color: Colors.grey,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 325,
-                height: 58,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.black,
-                      width: 2.0,
-                    ),
+      ),
+      SizedBox(width: 20),
+      Container(
+        width: 325,
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.grey,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 325,
+              height: 58,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black,
+                    width: 2.0,
                   ),
                 ),
-                child: Text(
-                  'Max Possible',
-                  style: TextStyle(color: Colors.white, fontSize: 26),
-                ),
               ),
-              Container(
-                width: 325,
-                height: 90,
-                alignment: Alignment.center,
-                child: Text(
-                  '300',
-                  style: TextStyle(color: Colors.white,
-                  fontSize: 26),
-                ),
+              child: Text(
+                'Max Possible',
+                style: TextStyle(color: Colors.white, fontSize: 26),
               ),
-            ],
-          ),
+            ),
+            Container(
+              width: 325,
+              height: 90,
+              alignment: Alignment.center,
+              child: Text(
+                maxPossibleScore.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 26),
+              ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
 
 
 
@@ -210,13 +210,19 @@ Widget criarTabelaScore(BuildContext context) {
                           height: MediaQuery.of(context).size.height * 0.16 / 2,
                           child: Center(
                             child: isEscolhaVisible(frameScores[frameIndex].value1)
-                                  ? Text(
-                                      '${frameScores[frameIndex].value1}',
-                                      style: TextStyle(fontSize: 26),
-                                    )
-                                  : Container(), 
+                                  ? frameScores[frameIndex].value1 == 10 
+                                        ? Text(
+                                            '',
+                                            style: TextStyle(fontSize: 26),
+                                          )
+                                        : Text(
+                                            '${frameScores[frameIndex].value1}',
+                                            style: TextStyle(fontSize: 26),
+                                          )
+                                    : Container(),
                           ),
                         ),
+
                         Container(
                           width: (MediaQuery.of(context).size.width * 0.9 / 10) / 2,
                           height: MediaQuery.of(context).size.height * 0.16 / 2,
@@ -233,13 +239,22 @@ Widget criarTabelaScore(BuildContext context) {
                             ),
                           ),
                           child: Center(
-                            child: isEscolhaVisible(frameScores[frameIndex].value1) &&
-                                  frameScores[frameIndex].value2 != -1
-                                    ? Text(
-                                      '${frameScores[frameIndex].value2}',
-                                      style: TextStyle(fontSize: 26),
-                                    )
-                                  : Container(), 
+                            child: isEscolhaVisible(frameScores[frameIndex].value1) && frameScores[frameIndex].value2 != -1
+                                    ? frameScores[frameIndex].value1 == 10
+                                        ? Text(
+                                            'X',
+                                            style: TextStyle(fontSize: 26),
+                                          )
+                                        : frameScores[frameIndex].value3 == 10
+                                            ? Text(
+                                                '/',
+                                                style: TextStyle(fontSize: 26),
+                                              )
+                                            : Text(
+                                                '${frameScores[frameIndex].value2}',
+                                                style: TextStyle(fontSize: 26),
+                                              )
+                                    : Container(),
                           ),
                         ),
                       ],
@@ -252,8 +267,7 @@ Widget criarTabelaScore(BuildContext context) {
                             height: MediaQuery.of(context).size.height * 0.16 / 2,
                             child: Center(
                                 child: isEscolhaVisible(frameScores[frameIndex].value1)
-                                  ? Text(
-                                      '${frameScores[frameIndex].value1}',
+                                  ? Text('${frameScores[frameIndex].value1}',
                                       style: TextStyle(fontSize: 26),
                                     )
                                   : Container(), ),
@@ -276,8 +290,7 @@ Widget criarTabelaScore(BuildContext context) {
                             child: Center(
                               child: isEscolhaVisible(frameScores[frameIndex].value1) &&
                                   frameScores[frameIndex].value2 != -1
-                                  ? Text(
-                                      '${frameScores[frameIndex].value2}',
+                                  ? Text('${frameScores[frameIndex].value2}',
                                       style: TextStyle(fontSize: 26),
                                     )
                                   : Container(), ),
@@ -302,8 +315,7 @@ Widget criarTabelaScore(BuildContext context) {
                                   frameScores[frameIndex].value2 != -1 &&
                                   frameScores[frameIndex].value4 != -1 
                                   //frameScores[frameIndex].value3 != -1
-                                  ? Text(
-                                      '${frameScores[frameIndex].value4}',
+                                  ? Text('${frameScores[frameIndex].value4}',
                                       style: TextStyle(fontSize: 26),
                                     )
                                   : Container(), ),
@@ -318,8 +330,7 @@ Widget criarTabelaScore(BuildContext context) {
                                   frameScores[frameIndex].value2 != -1 &&
                                   frameScores[frameIndex].value3 != -1 &&
                                   frameScores[frameIndex].value3 != 10
-                                  ? Text(
-                                      '${frameScores[frameIndex].value3}',
+                                  ? Text('${frameScores[frameIndex].value3}',
                                       style: TextStyle(fontSize: 26),
                                     )
                                   : Container(), ),
@@ -355,9 +366,12 @@ Widget criarBotoesOpcoes(BuildContext context) {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            for (int row = 0; row < 1; row++)
-              for (int col = 0; col < 1; col++)
-                SizedBox(
+              //for (int row = 0; row < 1; row++)
+              //for (int col = 0; col < 1; col++)
+              Visibility(
+                visible: !(bowlingLogic.jogadaValues.isNotEmpty &&
+                    bowlingLogic.jogadaValues[0] != 0),
+                child: SizedBox(
                   width: 140,
                   height: 140,
                   child: ElevatedButton(
@@ -383,8 +397,9 @@ Widget criarBotoesOpcoes(BuildContext context) {
                       ),
                     ),
                   ),
-                )
-          ],
+                ),
+              ),
+            ],
         ),
         for (int row = 0; row < 2; row++)
             Row(

@@ -27,8 +27,9 @@ class BowlingLogic {
       jogadaValues.add(buttonValue);
       valorTotal.add(buttonValue);
 
+      // STRIKE
       if (jogadaValues[0] == 10) {
-        frameScores[i].value1 = 0;
+        frameScores[i].value1 = 10;
         frameScores[i].value2 = 10;
         frameScores[i].value3 = -1;
         i++;
@@ -39,10 +40,11 @@ class BowlingLogic {
       frameScores[i].value2 = jogadaValues.length > 1 ? jogadaValues[1] : -1;
 
       if (jogadaValues.length > 1) {
-        frameScores[i].value3 = frameScores[i].value1 + frameScores[i].value2;
+        frameScores[i].value3 = calculateHDCP(frameScores);
 
-        if (frameScores[i].value3 == 10) {
-          frameScores[i].value3 = -1;
+        // SPARE
+        if (frameScores[i].value1 + frameScores[i].value2 == 10) {
+          frameScores[i].value3 = 10;
         }
 
         i++;
@@ -51,21 +53,21 @@ class BowlingLogic {
         frameScores[i].value3 = 0;
       }
     } else {
+      
       jogadaValues.add(buttonValue);
       valorTotal.add(buttonValue);
+
+      // STRIKE
 
       frameScores[i].value1 = jogadaValues.isNotEmpty ? jogadaValues[0] : -1;
       frameScores[i].value2 = jogadaValues.length > 1 ? jogadaValues[1] : -1;
       frameScores[i].value4 = jogadaValues.length > 2 ? jogadaValues[2] : -1;
 
       if (jogadaValues.length > 2) {
-        frameScores[i].value3 = frameScores[i].value1 +
-            frameScores[i].value2 +
-            frameScores[i].value4;
-
-        if (frameScores[i].value3 == 10) {
-          frameScores[i].value3 = -1;
-        }
+        frameScores[i].value3 = frameScores[i].value3 = calculateHDCP(frameScores);
+        
+        // SPARE
+        
 
         i++;
         jogadaValues.clear();
@@ -74,7 +76,6 @@ class BowlingLogic {
       }
     }
 
-    logger.d('Valores botões $jogadaValues');
     logger.d('Valor total $valorTotal');
   }
 
@@ -137,6 +138,21 @@ class BowlingLogic {
         buttonsVisibility[row][col] = isVisible;
       }
     }
+  }
+
+    int calculateHDCP(List<FrameScore> frameScores) {
+    int hdcp = 0;
+    for (int i = 0; i < valorTotal.length; i++) {
+      hdcp  += valorTotal[i];
+
+      if (i < frameScores.length - 1) {
+        if (frameScores[i].value1 + frameScores[i].value2 == 10) {
+          hdcp += frameScores[i + 1].value1;
+        }
+      }
+    }
+    logger.d('Valor HDCP $hdcp');
+    return hdcp;
   }
 }
 
