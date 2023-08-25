@@ -13,8 +13,9 @@ class FrameScore {
 
 class BowlingLogic {
   final Logger logger = Logger();
-  List<int> buttonValues = [];
   int i = 0;
+  List<int> jogadaValues = [];
+  List<int> valorTotal = [];
   List<List<bool>> buttonsVisibility =
       List.generate(2, (_) => List.filled(5, true));
 
@@ -23,20 +24,21 @@ class BowlingLogic {
 
     // Verificar se o frame atual ainda está sendo preenchido
     if (i < frameScores.length - 1) {
-      buttonValues.add(buttonValue);
+      jogadaValues.add(buttonValue);
+      valorTotal.add(buttonValue);
 
-      if (buttonValues[0] == 10) {
+      if (jogadaValues[0] == 10) {
         frameScores[i].value1 = 0;
         frameScores[i].value2 = 10;
         frameScores[i].value3 = -1;
         i++;
-        buttonValues.clear();
+        jogadaValues.clear();
       }
 
-      frameScores[i].value1 = buttonValues.isNotEmpty ? buttonValues[0] : -1;
-      frameScores[i].value2 = buttonValues.length > 1 ? buttonValues[1] : -1;
+      frameScores[i].value1 = jogadaValues.isNotEmpty ? jogadaValues[0] : -1;
+      frameScores[i].value2 = jogadaValues.length > 1 ? jogadaValues[1] : -1;
 
-      if (buttonValues.length > 1) {
+      if (jogadaValues.length > 1) {
         frameScores[i].value3 = frameScores[i].value1 + frameScores[i].value2;
 
         if (frameScores[i].value3 == 10) {
@@ -44,37 +46,40 @@ class BowlingLogic {
         }
 
         i++;
-        buttonValues.clear();
+        jogadaValues.clear();
       } else {
         frameScores[i].value3 = 0;
       }
     } else {
-      
-      buttonValues.add(buttonValue);
+      jogadaValues.add(buttonValue);
+      valorTotal.add(buttonValue);
 
-      frameScores[i].value1 = buttonValues.isNotEmpty ? buttonValues[0] : -1;
-      frameScores[i].value2 = buttonValues.length > 1 ? buttonValues[1] : -1;
-      frameScores[i].value4 = buttonValues.length > 2 ? buttonValues[2] : -1;
+      frameScores[i].value1 = jogadaValues.isNotEmpty ? jogadaValues[0] : -1;
+      frameScores[i].value2 = jogadaValues.length > 1 ? jogadaValues[1] : -1;
+      frameScores[i].value4 = jogadaValues.length > 2 ? jogadaValues[2] : -1;
 
-      if (buttonValues.length > 2) {
-        frameScores[i].value3 = frameScores[i].value1 + frameScores[i].value2 + frameScores[i].value4;
+      if (jogadaValues.length > 2) {
+        frameScores[i].value3 = frameScores[i].value1 +
+            frameScores[i].value2 +
+            frameScores[i].value4;
 
         if (frameScores[i].value3 == 10) {
           frameScores[i].value3 = -1;
         }
 
         i++;
-        buttonValues.clear();
+        jogadaValues.clear();
       } else {
         frameScores[i].value3 = 10;
       }
     }
 
-    logger.d('Valores botões $buttonValues');
+    logger.d('Valores botões $jogadaValues');
+    logger.d('Valor total $valorTotal');
   }
 
   void updateButtonVisibility() {
-    int firstValor = buttonValues.isNotEmpty ? buttonValues[0] : 0;
+    int firstValor = jogadaValues.isNotEmpty ? jogadaValues[0] : 0;
 
     for (int row = 0; row < 2; row++) {
       for (int col = 0; col < 5; col++) {
