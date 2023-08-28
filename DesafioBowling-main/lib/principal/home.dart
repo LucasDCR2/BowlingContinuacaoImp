@@ -92,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget criarContainersScore(BuildContext context, int hdcpScore, int maxPossibleScore) {
   int hdcpScore = bowlingLogic.calculateHDCP(frameScores);
+  
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -122,17 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(color: Colors.white, fontSize: 26),
               ),
             ),
-            Container(
-              width: 325,
-              height: 90,
-              alignment: Alignment.center,
-              child: Text(
-                hdcpScore.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 26),
+              Visibility(
+                visible:hdcpScore != 9 ,
+                child: Container(
+                  width: 325,
+                  height: 90,
+                  alignment: Alignment.center,
+                  child: Text(
+                    hdcpScore.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 26),
+                  ),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
       ),
       SizedBox(width: 20),
       Container(
@@ -245,7 +249,7 @@ Widget criarTabelaScore(BuildContext context) {
                                             'X',
                                             style: TextStyle(fontSize: 26),
                                           )
-                                        : frameScores[frameIndex].value3 == 10
+                                        : frameScores[frameIndex].value3 == 301 //  : frameScores[frameIndex].value1 + frameScores[frameIndex].value2 == 10 
                                             ? Text(
                                                 '/',
                                                 style: TextStyle(fontSize: 26),
@@ -329,11 +333,10 @@ Widget criarTabelaScore(BuildContext context) {
                         child: isEscolhaVisible(frameScores[frameIndex].value1) &&
                                   frameScores[frameIndex].value2 != -1 &&
                                   frameScores[frameIndex].value3 != -1 &&
-                                  frameScores[frameIndex].value3 != 10
-                                  ? Text('${frameScores[frameIndex].value3}',
-                                      style: TextStyle(fontSize: 26),
+                                  frameScores[frameIndex].value3 != 301
+                                  ? Text('${frameScores[frameIndex].value3}', style: TextStyle(fontSize: 26),
                                     )
-                                  : Container(), ),
+                                  : Container(),),
                     ),
                   ],
                 ),

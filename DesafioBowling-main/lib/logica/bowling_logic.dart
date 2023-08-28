@@ -17,7 +17,7 @@ class BowlingLogic {
   List<int> jogadaValues = [];
   List<int> valorTotal = [];
   List<List<bool>> buttonsVisibility =
-      List.generate(2, (_) => List.filled(5, true));
+  List.generate(2, (_) => List.filled(5, true));
 
   void updateScores(List<FrameScore> frameScores, int row, int col) {
     final buttonValue = row * 5 + col;
@@ -28,23 +28,29 @@ class BowlingLogic {
       valorTotal.add(buttonValue);
 
       // STRIKE
+      /*if (jogadaValues[0] == 10) {
+        frameScores[i].value1 = 10;
+        frameScores[i].value2 = 10;
+        frameScores[i].value3 = -1;
+        i++;
+        jogadaValues.clear();
+      }*/
       if (jogadaValues[0] == 10) {
         frameScores[i].value1 = 10;
         frameScores[i].value2 = 10;
         frameScores[i].value3 = -1;
         i++;
         jogadaValues.clear();
+      } else {
+        frameScores[i].value1 = jogadaValues.isNotEmpty ? jogadaValues[0] : -1;
+        frameScores[i].value2 = jogadaValues.length > 1 ? jogadaValues[1] : -1;
       }
-
-      frameScores[i].value1 = jogadaValues.isNotEmpty ? jogadaValues[0] : -1;
-      frameScores[i].value2 = jogadaValues.length > 1 ? jogadaValues[1] : -1;
-
       if (jogadaValues.length > 1) {
         frameScores[i].value3 = calculateHDCP(frameScores);
 
         // SPARE
         if (frameScores[i].value1 + frameScores[i].value2 == 10) {
-          frameScores[i].value3 = 10;
+          frameScores[i].value3 = 301;
         }
 
         i++;
@@ -64,7 +70,7 @@ class BowlingLogic {
       frameScores[i].value4 = jogadaValues.length > 2 ? jogadaValues[2] : -1;
 
       if (jogadaValues.length > 2) {
-        frameScores[i].value3 = frameScores[i].value3 = calculateHDCP(frameScores);
+        frameScores[i].value3 = calculateHDCP(frameScores);
         
         // SPARE
         
@@ -76,7 +82,8 @@ class BowlingLogic {
       }
     }
 
-    logger.d('Valor total $valorTotal');
+    //logger.d('Valor total $valorTotal');
+    //logger.d('botoes $jogadaValues');
   }
 
   void updateButtonVisibility() {
@@ -140,40 +147,22 @@ class BowlingLogic {
     }
   }
 
-    int calculateHDCP(List<FrameScore> frameScores) {
-    int hdcp = 0;
-    for (int i = 0; i < valorTotal.length; i++) {
-      hdcp  += valorTotal[i];
+int calculateHDCP(List<FrameScore> frameScores) {
+  int hdcp = 0;
+  for (int i = 0; i < valorTotal.length; i++) {
+    hdcp += valorTotal[i];
 
-      if (i < frameScores.length - 1) {
-        if (frameScores[i].value1 + frameScores[i].value2 == 10) {
-          hdcp += frameScores[i + 1].value1;
-        }
+    if (i < frameScores.length - 1) {
+      if (frameScores[i].value1 + frameScores[i].value2 == 10) {
+        hdcp += frameScores[i + 1].value1;
+      } else if (frameScores[i].value1 == 10) {
+        hdcp += frameScores[i + 1].value1 + frameScores[i + 1].value2;
       }
     }
-    logger.d('Valor HDCP $hdcp');
-    return hdcp;
   }
+  logger.d('Valor HDCP $hdcp');
+  return hdcp;
 }
-
-
-
-
-/*
-final buttonValue = row * 5 + col;
-List<int> buttonValues = [];
-  se buttonValues[0] = 0 - todos botoes devem estar visiveis 
-  se buttonValues[0] = 1 - os buttonValue = 10 devem ficar invisiveis
-  se buttonValues[0] = 2 - os buttonValue = 10 e 9 devem ficar invisiveis
-  se buttonValues[0] = 3 - os buttonValue = 10, 9, 8 devem ficar invisiveis
-  se buttonValues[0] = 4 - os buttonValue = 10, 9, 8, 7 devem ficar invisiveis 
-  se buttonValues[0] = 5 - os buttonValue = 10, 9, 8, 7, 6  devem ficar invisiveis 
-  se buttonValues[0] = 6 - os buttonValue = 10, 9, 8, 7, 6, 5  devem ficar invisiveis 
-  se buttonValues[0] = 7 - os buttonValue = 10, 9, 8, 7, 6, 5, 4,   devem ficar invisiveis
-  se buttonValues[0] = 8 - os buttonValue = 10, 9, 8, 7, 6, 5, 4, 3   devem ficar invisiveis 
-  se buttonValues[0] = 9 - os buttonValue = 10, 9, 8, 7, 6, 5, 4, 3, 2  devem ficar invisiveis
-  se buttonValues[0] = 10 - todos botoes devem estar invisiveis 
-*/
-
+}
 
 
