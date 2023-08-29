@@ -71,14 +71,9 @@ class BowlingLogic {
 
       if (jogadaValues.length > 2) {
         frameScores[i].value3 = calculateHDCP(frameScores);
-        
-        // SPARE
-        
 
         i++;
         jogadaValues.clear();
-      } else {
-        frameScores[i].value3 = 10;
       }
     }
 
@@ -161,7 +156,7 @@ int calculateHDCP(List<FrameScore> frameScores) {
     }
   }
   logger.d('Valor HDCP $hdcp');
-  return hdcp;
+  return hdcp;  
 }
 }
 

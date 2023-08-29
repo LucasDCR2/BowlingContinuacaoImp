@@ -271,10 +271,16 @@ Widget criarTabelaScore(BuildContext context) {
                             height: MediaQuery.of(context).size.height * 0.16 / 2,
                             child: Center(
                                 child: isEscolhaVisible(frameScores[frameIndex].value1)
-                                  ? Text('${frameScores[frameIndex].value1}',
-                                      style: TextStyle(fontSize: 26),
-                                    )
-                                  : Container(), ),
+                                  ? frameScores[frameIndex].value1 == 10 
+                                        ? Text(
+                                            '',
+                                            style: TextStyle(fontSize: 26),
+                                          )
+                                        : Text(
+                                            '${frameScores[frameIndex].value1}',
+                                            style: TextStyle(fontSize: 26),
+                                          )
+                                    : Container(), ),
                           ),
                           Container(
                             width: (MediaQuery.of(context).size.width * 0.9 / 10) / 3,
@@ -294,10 +300,21 @@ Widget criarTabelaScore(BuildContext context) {
                             child: Center(
                               child: isEscolhaVisible(frameScores[frameIndex].value1) &&
                                   frameScores[frameIndex].value2 != -1
-                                  ? Text('${frameScores[frameIndex].value2}',
-                                      style: TextStyle(fontSize: 26),
-                                    )
-                                  : Container(), ),
+                                  ? frameScores[frameIndex].value1 == 10
+                                        ? Text(
+                                            'X',
+                                            style: TextStyle(fontSize: 26),
+                                          )
+                                        : frameScores[frameIndex].value3 == 10 //  : frameScores[frameIndex].value1 + frameScores[frameIndex].value2 == 10 
+                                            ? Text(
+                                                '/',
+                                                style: TextStyle(fontSize: 26),
+                                              )
+                                            : Text(
+                                                '${frameScores[frameIndex].value2}',
+                                                style: TextStyle(fontSize: 26),
+                                              )
+                                    : Container(), ),
                           ),
                           Container(
                             width: (MediaQuery.of(context).size.width * 0.86 / 10) / 3,
@@ -317,7 +334,8 @@ Widget criarTabelaScore(BuildContext context) {
                             child: Center(
                               child: isEscolhaVisible(frameScores[frameIndex].value1) &&
                                   frameScores[frameIndex].value2 != -1 &&
-                                  frameScores[frameIndex].value4 != -1 
+                                  frameScores[frameIndex].value4 != -1 &&
+                                  frameScores[frameIndex].value4 != 10
                                   //frameScores[frameIndex].value3 != -1
                                   ? Text('${frameScores[frameIndex].value4}',
                                       style: TextStyle(fontSize: 26),
@@ -333,7 +351,7 @@ Widget criarTabelaScore(BuildContext context) {
                         child: isEscolhaVisible(frameScores[frameIndex].value1) &&
                                   frameScores[frameIndex].value2 != -1 &&
                                   frameScores[frameIndex].value3 != -1 &&
-                                  frameScores[frameIndex].value3 != 301
+                                  frameScores[frameIndex].value3 != 301   
                                   ? Text('${frameScores[frameIndex].value3}', style: TextStyle(fontSize: 26),
                                     )
                                   : Container(),),
